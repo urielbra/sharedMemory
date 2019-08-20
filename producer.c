@@ -22,6 +22,9 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
+#define PASSO 210
+#define NUM_PROCESSOS 5
+
 int main()
 {
 	const int SIZE = 4096;
@@ -76,9 +79,14 @@ int main()
 	// ptr += 7; //Move o ponteiro
 	char c;
 	int contador = 0;
-
-	for (contador = 0; contador < 505; contador++,ptr++) {
-		if(contador%101==0){
+	int choice;
+	printf("O que deseja fazer? \n");
+	printf("1.Preencher a Memória? \n");
+	printf("2.Ler na memória \n");
+	scanf("%d",&choice);
+	if(choice==1){
+		for (contador = 0; contador < NUM_PROCESSOS*PASSO; contador++,ptr++) {
+		if(contador%PASSO==0){
 			*ptr = 'A' + rand()%26;
         	printf("%d|Char to read: %c\n" ,contador, *ptr);
 		} else {
@@ -88,6 +96,10 @@ int main()
     }   	
 	*ptr = '\0';
 	ptr++;
+	} else {
+		 printf("%s\n",(char*)ptr);
+	}
+
 	//*ptr=10;
 	
 	//memcpy(ptr,"conteudo",tamanho);

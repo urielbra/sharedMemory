@@ -10,6 +10,7 @@
 #include <sys/mman.h>
 
 #define NUM_PROCESSOS 5
+#define PASSO 210
 
 
 int conta(char* substring){
@@ -18,7 +19,7 @@ int conta(char* substring){
 	char search = (char)(substring[0] + 32);
 	printf("Process: %d, My search Caracthers: %c\n",getpid(), search);
 
-	for (index = 1 ; index < 101 ; index++){
+	for (index = 1 ; index < PASSO ; index++){
 		// printf("%d Analyzig Caracthers: %c\n",index, substring[index]);
 		if (substring[index] == search) {
 			printf("Found search %c on index: %d\n",search,index);
@@ -26,6 +27,8 @@ int conta(char* substring){
 		}
 		// substring[index] = "*";
 	}
+	// substring[index-PASSO] = ('0' + contador);
+	// printf("Changing %c for %c",substring[index-PASSO],('0' + contador) );
 	printf("I found %d occorrences of %c\n\n\n\n", contador, search);
 	return contador;
 }
@@ -58,10 +61,11 @@ int main (int argc, char *argv[], char *envp[])
 
 	printf ("Ola, sou o processo %5d\n", getpid()) ;
 	//Cria NUM_PROCESSOS	
-	ptr = ptr - 101 * sizeof(char); // Move pointer to next 100 chars
+	ptr = ptr - PASSO * sizeof(char); // Move pointer to next 100 chars
 	for (i=0;i<NUM_PROCESSOS;i++){
-		ptr = ptr + 101 * sizeof(char); // Move pointer to next 100 chars 	
+		ptr = ptr + PASSO * sizeof(char); // Move pointer to next 100 chars 	
 		retval = fork () ;
+		sleep(1);
 		if (retval == 0){ //se processo filho			
 			// printf ("[retval: %5d] sou %5d, filho de %5d\n",
 										// retval, getpid(), getppid()) ;
@@ -77,13 +81,13 @@ int main (int argc, char *argv[], char *envp[])
 	// printf("%d\n", *((int*)(ptr+strlen(ptr)+1)));
 	
 	ptr = ptr; // Read first 100 chars
-	conta(ptr);
+	return conta(ptr);
 	}
 	else {
 		for (i=0;i<NUM_PROCESSOS;i++)
 			printf("%d terminou\n",wait(0));
 	}
 	// printf ("Tchau de %5d!\n",getpid()) ;
-	ptr = ptr + 101 * sizeof(char); // Move pointer to next 100 chars 	
+	ptr = ptr + PASSO * sizeof(char); // Move pointer to next 100 chars 	
 	exit (0) ;
 }
