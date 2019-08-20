@@ -27,7 +27,7 @@ int conta(char* substring){
 	for (index = 1 ; index < 101 ; index++){
 		printf("%d Analyzig Caracthers: %c\n",index, substring[index]);
 		if (substring[index] == search) {
-			printf("Found search char on index: %d\n",index);
+			printf("Found search %c on index: %d\n",search,index);
 			contador++; 
 		}
 		// substring[index] = "*";
